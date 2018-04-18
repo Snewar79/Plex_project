@@ -228,7 +228,40 @@ private: System::Void MyForm_MouseMove(System::Object^  sender, System::Windows:
 	}
 
 
+	if (radioButton2->Checked)
+	{
 
+		st highlightPointSt;
+
+
+		if (top != NULL)
+		{
+			if (highlightPoint->isVisible())
+				highlightPoint->hide(gr, System::Drawing::Color::Blue);
+		
+			highlightPointSt = top->findNear(e->X, e->Y, 50, highlightPoint);
+		
+			if (highlightPoint->isVisible())
+				highlightPoint->show(gr, System::Drawing::Color::Red);
+		}
+
+		if (highlightPointSt.chart != NULL)
+		{
+			if (highlightPointSt.pe != NULL)
+			{
+				dynamic_cast<TPoint*>(highlightPointSt.pe)->setX(e->X);
+				dynamic_cast<TPoint*>(highlightPointSt.pe)->setY(e->Y);
+			}
+			if (highlightPointSt.ps != NULL)
+			{
+				dynamic_cast<TPoint*>(highlightPointSt.ps)->setX(e->X);
+				dynamic_cast<TPoint*>(highlightPointSt.ps)->setY(e->Y);
+			}
+
+		}
+
+
+	}
 
 
 	
@@ -241,11 +274,13 @@ private: System::Void MyForm_MouseMove(System::Object^  sender, System::Windows:
 }
 private: System::Void MyForm_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 
+	mouse_flag_down = false;
+
 	
 	if (radioButton1->Checked)
 	{
 		gr->DrawLine(System::Drawing::Pens::White, x1, y1, x2, y2);
-		mouse_flag_down = false;
+		
 
 		if (top == NULL)
 		{
