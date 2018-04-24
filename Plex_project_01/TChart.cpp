@@ -6,6 +6,23 @@
 
 
 
+struct chart_str
+{
+	
+	std::string start;
+	std::string end;
+	std::string visible;
+};
+
+
+struct point_str
+{
+	std::string visible;
+	std::string start;
+	std::string end;
+};
+
+
 
 
 void TChart::show(System::Drawing::Graphics^ gr, System::Drawing::Color cl)
@@ -361,6 +378,10 @@ void TChart::saveChartToFile(std::string fileName)
 
 	fout.open(fileName);
 
+	
+
+
+
 	saveChartRec(this, fout);
 
 	fout.close();
@@ -420,6 +441,24 @@ TPoint * TChart::saveChartRec(TRoot * chart, std::ofstream & file)
 
 }
 
+
+TChart * TChart::openFromFile(std::string fileName)
+{
+
+	
+	
+	std::ifstream file;
+	file.open(fileName);
+	
+
+
+
+
+
+	file.close();
+	
+	return 0;
+}
 
 
 void TChart::showChartSingle(System::Drawing::Graphics^ gr, TRoot * chart, System::Drawing::Color cl)

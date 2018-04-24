@@ -30,7 +30,7 @@ public:
 	TPoint * saveChartRec(TRoot * chart, std::ofstream & file);
 
 
-
+	TChart * openFromFile(std::string fileName);
 
 	void setEnd(TRoot * t)
 	{
