@@ -402,7 +402,7 @@ TPoint * TChart::saveChartRec(TRoot * chart, std::ofstream & file)
 		tmp_p = dynamic_cast<TPoint*>(chart);
 		if (tmp_p)
 		{
-			file << "Point " << chart;
+			file << "Point " << chart << " " << tmp_p->getX() << " " << tmp_p->getY();
 			if (chart->isVisible())
 				file << " vis\n";
 			else file << " unVis\n";
