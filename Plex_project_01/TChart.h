@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TPoint.h"
-
+#include <fstream>
 
 
 struct st;
@@ -24,6 +24,14 @@ public:
 		start = t;
 	}
 
+
+	void saveChartToFile(std::string fileName);
+
+	TPoint * saveChartRec(TRoot * chart, std::ofstream & file);
+
+
+
+
 	void setEnd(TRoot * t)
 	{
 		end = t;
@@ -31,12 +39,18 @@ public:
 
 	TPoint * showChartRec(System::Drawing::Graphics^ gr, TRoot * chart);
 	
-	void showChartIt(System::Drawing::Graphics^ gr, TRoot * chart);
+	void showChartIt(System::Drawing::Graphics^ gr, TRoot * chart, System::Drawing::Color cl);
+
+	void hideChartIt(System::Drawing::Graphics^ gr, TRoot * chart, System::Drawing::Color cl);
 
 	st findNear(int, int, double, TPoint * ch);
 	
 	st findAnyPoint(int x, int y, double eps, TPoint * curr);
 	
+	st findNearEdge(int x, int y, double eps);
+
+	void showChartSingle(System::Drawing::Graphics^ gr, TRoot * chart, System::Drawing::Color cl);
+
 };
 
 

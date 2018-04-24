@@ -29,10 +29,11 @@ namespace Plex_project_01 {
 			gr = CreateGraphics();
 			mouse_flag_down = false;
 			highlightPoint = new TPoint;
-
-			
-
-			
+			selectedPoint = new st;
+			currPoint = new TPoint;
+			currPoint->setUnVisible();
+			selectedEdge = new st;
+			//selectedEdge->chart->setUnVisible();
 			
 			
 
@@ -74,6 +75,9 @@ namespace Plex_project_01 {
 		TChart *currChart;
 
 		TPoint *highlightPoint;
+		st *selectedPoint;
+		st *selectedEdge;
+
 
 		bool chartSelect;
 		bool pointSelect;
@@ -88,6 +92,10 @@ namespace Plex_project_01 {
 	protected:
 	private: System::Windows::Forms::RadioButton^  radioButton2;
 	private: System::Windows::Forms::RadioButton^  radioButton3;
+	private: System::Windows::Forms::RadioButton^  radioButton4;
+	private: System::Windows::Forms::MenuStrip^  menuStrip1;
+	private: System::Windows::Forms::ToolStripMenuItem^  openFileToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  saveToFileToolStripMenuItem;
 
 	protected:
 
@@ -122,12 +130,17 @@ namespace Plex_project_01 {
 			this->radioButton1 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton2 = (gcnew System::Windows::Forms::RadioButton());
 			this->radioButton3 = (gcnew System::Windows::Forms::RadioButton());
+			this->radioButton4 = (gcnew System::Windows::Forms::RadioButton());
+			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->openFileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->saveToFileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->menuStrip1->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// radioButton1
 			// 
 			this->radioButton1->AutoSize = true;
-			this->radioButton1->Location = System::Drawing::Point(12, 12);
+			this->radioButton1->Location = System::Drawing::Point(12, 36);
 			this->radioButton1->Name = L"radioButton1";
 			this->radioButton1->Size = System::Drawing::Size(80, 17);
 			this->radioButton1->TabIndex = 0;
@@ -138,18 +151,18 @@ namespace Plex_project_01 {
 			// radioButton2
 			// 
 			this->radioButton2->AutoSize = true;
-			this->radioButton2->Location = System::Drawing::Point(12, 35);
+			this->radioButton2->Location = System::Drawing::Point(12, 82);
 			this->radioButton2->Name = L"radioButton2";
-			this->radioButton2->Size = System::Drawing::Size(126, 17);
+			this->radioButton2->Size = System::Drawing::Size(115, 17);
 			this->radioButton2->TabIndex = 1;
 			this->radioButton2->TabStop = true;
-			this->radioButton2->Text = L"Vertex Seletion Mode";
+			this->radioButton2->Text = L"Vertex Move Mode";
 			this->radioButton2->UseVisualStyleBackColor = true;
 			// 
 			// radioButton3
 			// 
 			this->radioButton3->AutoSize = true;
-			this->radioButton3->Location = System::Drawing::Point(12, 58);
+			this->radioButton3->Location = System::Drawing::Point(12, 105);
 			this->radioButton3->Name = L"radioButton3";
 			this->radioButton3->Size = System::Drawing::Size(124, 17);
 			this->radioButton3->TabIndex = 2;
@@ -157,20 +170,64 @@ namespace Plex_project_01 {
 			this->radioButton3->Text = L"Edge selection mode";
 			this->radioButton3->UseVisualStyleBackColor = true;
 			// 
+			// radioButton4
+			// 
+			this->radioButton4->AutoSize = true;
+			this->radioButton4->Location = System::Drawing::Point(12, 59);
+			this->radioButton4->Name = L"radioButton4";
+			this->radioButton4->Size = System::Drawing::Size(129, 17);
+			this->radioButton4->TabIndex = 3;
+			this->radioButton4->TabStop = true;
+			this->radioButton4->Text = L"Vertex selection mode";
+			this->radioButton4->UseVisualStyleBackColor = true;
+			// 
+			// menuStrip1
+			// 
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->openFileToolStripMenuItem,
+					this->saveToFileToolStripMenuItem
+			});
+			this->menuStrip1->Location = System::Drawing::Point(0, 0);
+			this->menuStrip1->Name = L"menuStrip1";
+			this->menuStrip1->Size = System::Drawing::Size(1051, 24);
+			this->menuStrip1->TabIndex = 4;
+			this->menuStrip1->Text = L"menuStrip1";
+			// 
+			// openFileToolStripMenuItem
+			// 
+			this->openFileToolStripMenuItem->Name = L"openFileToolStripMenuItem";
+			this->openFileToolStripMenuItem->Size = System::Drawing::Size(69, 20);
+			this->openFileToolStripMenuItem->Text = L"Open File";
+			this->openFileToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::openFileToolStripMenuItem_Click);
+			// 
+			// saveToFileToolStripMenuItem
+			// 
+			this->saveToFileToolStripMenuItem->Name = L"saveToFileToolStripMenuItem";
+			this->saveToFileToolStripMenuItem->Size = System::Drawing::Size(76, 20);
+			this->saveToFileToolStripMenuItem->Text = L"Save to file";
+			this->saveToFileToolStripMenuItem->Click += gcnew System::EventHandler(this, &MyForm::saveToFileToolStripMenuItem_Click);
+			// 
 			// MyForm
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::SystemColors::ButtonHighlight;
 			this->ClientSize = System::Drawing::Size(1051, 553);
+			this->Controls->Add(this->radioButton4);
 			this->Controls->Add(this->radioButton3);
 			this->Controls->Add(this->radioButton2);
 			this->Controls->Add(this->radioButton1);
+			this->Controls->Add(this->menuStrip1);
+			this->KeyPreview = true;
+			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
 			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseDown);
 			this->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseMove);
 			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseUp);
+			this->menuStrip1->ResumeLayout(false);
+			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -188,7 +245,78 @@ private: System::Void MyForm_MouseDown(System::Object^  sender, System::Windows:
 	x2 = x1;
 	y2 = y1;
 
-	mouse_flag_down = true;
+	if (radioButton1->Checked)
+		mouse_flag_down = true;
+
+
+	if (radioButton2->Checked)
+	{
+		selectedPoint->chart = NULL;
+		selectedPoint->pe = NULL;
+		selectedPoint->ps = NULL;
+		if (top != NULL)
+			*selectedPoint = top->findNear(x1, y1, 50, currPoint);
+
+		if (selectedPoint->chart != NULL)
+		{
+			mouse_flag_down = true;
+
+		}
+
+
+	}
+
+	if (radioButton3->Checked)
+	{
+		//selectedEdge->chart->showChartSingle(gr, selectedEdge->chart, System::Drawing::Color::White);
+
+		if (top != NULL)
+			top->show(gr, System::Drawing::Color::Black);
+		else return;
+
+
+		*selectedEdge = top->findNearEdge(x1, y1, 1000);
+
+		if (selectedEdge->chart != NULL)
+		{
+
+			selectedEdge->chart->showChartSingle(gr, selectedEdge->chart, System::Drawing::Color::RoyalBlue);
+
+		}
+
+
+	}
+
+
+	if (radioButton4->Checked)
+	{
+		if (top != NULL)
+			top->show(gr, System::Drawing::Color::Black);
+		else return;
+
+		*selectedPoint = top->findNear(e->X, e->Y, 50, currPoint);
+
+
+		if (selectedPoint->chart != NULL)
+		{
+
+			top->show(gr, System::Drawing::Color::Black);
+
+
+			//selectedEdge->chart->showChartSingle(gr, selectedEdge->chart, System::Drawing::Color::RoyalBlue);
+			if (selectedPoint->pe != NULL)
+			{
+				selectedPoint->pe->show(gr, System::Drawing::Color::Red);
+
+			}
+			else
+			{
+				selectedPoint->ps->show(gr, System::Drawing::Color::Red);
+			}
+
+		}
+
+	}
 
 
 
@@ -234,6 +362,7 @@ private: System::Void MyForm_MouseMove(System::Object^  sender, System::Windows:
 		st highlightPointSt;
 
 
+
 		if (top != NULL)
 		{
 			if (highlightPoint->isVisible())
@@ -245,19 +374,14 @@ private: System::Void MyForm_MouseMove(System::Object^  sender, System::Windows:
 				highlightPoint->show(gr, System::Drawing::Color::Red);
 		}
 
-		if (highlightPointSt.chart != NULL)
+		if (mouse_flag_down)
 		{
-			if (highlightPointSt.pe != NULL)
-			{
-				dynamic_cast<TPoint*>(highlightPointSt.pe)->setX(e->X);
-				dynamic_cast<TPoint*>(highlightPointSt.pe)->setY(e->Y);
-			}
-			if (highlightPointSt.ps != NULL)
-			{
-				dynamic_cast<TPoint*>(highlightPointSt.ps)->setX(e->X);
-				dynamic_cast<TPoint*>(highlightPointSt.ps)->setY(e->Y);
-			}
+			gr->DrawLine(System::Drawing::Pens::White, x1, y1, x2, y2);
 
+			x2 = e->X;
+			y2 = e->Y;
+
+			gr->DrawLine(System::Drawing::Pens::Gray, x1, y1, x2, y2);
 		}
 
 
@@ -463,6 +587,98 @@ private: System::Void MyForm_MouseUp(System::Object^  sender, System::Windows::F
 
 		top->show(gr, System::Drawing::Color::Black);
 	}
+
+	if (radioButton2->Checked)
+	{
+	
+		if (selectedPoint->chart != NULL)
+		{
+			gr->DrawLine(System::Drawing::Pens::White, x1, y1, x2, y2);
+
+			if (selectedPoint->ps != NULL)
+			{
+				top->hide(gr, System::Drawing::Color::White);
+
+				dynamic_cast<TPoint*>(selectedPoint->ps)->setX(x2);
+				dynamic_cast<TPoint*>(selectedPoint->ps)->setY(y2);
+
+				top->show(gr, System::Drawing::Color::Black);
+			}
+			else
+			{
+				top->hide(gr, System::Drawing::Color::White);
+
+				dynamic_cast<TPoint*>(selectedPoint->pe)->setX(x2);
+				dynamic_cast<TPoint*>(selectedPoint->pe)->setY(y2);
+
+				top->show(gr, System::Drawing::Color::Black);
+
+					
+			}
+
+		}
+	
+	
+	}
+
+}
+private: System::Void MyForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+
+
+	if (radioButton3->Checked)
+	{
+		if (selectedEdge->chart != NULL && e->KeyCode == Keys::Delete)
+		{
+			selectedEdge->chart->hide(gr, System::Drawing::Color::White);
+			selectedEdge->chart->setUnVisible();
+			top->show(gr, System::Drawing::Color::Black);
+		}
+
+
+	}
+
+	if (radioButton4->Checked)
+	{
+
+		if (selectedPoint->chart != NULL && e->KeyCode == Keys::Delete)
+		{
+			if (selectedPoint->pe != NULL)
+			{
+				selectedPoint->pe->hide(gr, System::Drawing::Color::White);
+				selectedPoint->pe->setUnVisible();
+				gr->FillRectangle(System::Drawing::Brushes::White, 0, 0, Width, Height);
+				top->show(gr, System::Drawing::Color::Black);
+
+			}
+			else
+			{
+				selectedPoint->ps->hide(gr, System::Drawing::Color::White);
+				selectedPoint->ps->setUnVisible();
+				gr->FillRectangle(System::Drawing::Brushes::White, 0, 0, Width, Height);
+				top->show(gr, System::Drawing::Color::Black);
+			}
+				
+		}
+
+
+	}
+
+
+
+}
+private: System::Void openFileToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+
+
+
+
+
+}
+private: System::Void saveToFileToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+
+
+	top->saveChartToFile("Plex_00.bin");
+
+
 }
 };
 }
