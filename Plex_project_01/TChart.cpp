@@ -3,12 +3,12 @@
 #include "TChart.h"
 #include <stdlib.h>
 #include <stack>
-
+#include <string>
 
 
 struct chart_str
 {
-	
+	std::string id;
 	std::string start;
 	std::string end;
 	std::string visible;
@@ -17,9 +17,9 @@ struct chart_str
 
 struct point_str
 {
+	std::string id;
 	std::string visible;
-	std::string start;
-	std::string end;
+	int x, y;
 };
 
 
@@ -379,6 +379,7 @@ void TChart::saveChartToFile(std::string fileName)
 	fout.open(fileName);
 
 	
+	
 
 
 
@@ -402,7 +403,7 @@ TPoint * TChart::saveChartRec(TRoot * chart, std::ofstream & file)
 		// if it's a chart
 
 
-		file << "Chart " << tmp->start << " | " << tmp->end;
+		file << "Chart " << tmp << " " << tmp->start << " | " << tmp->end;
 		if (chart->isVisible())
 			file << " vis\n";
 		else file << " unVis\n";
@@ -447,17 +448,122 @@ TChart * TChart::openFromFile(std::string fileName)
 
 	
 	
-	std::ifstream file;
-	file.open(fileName);
+	std::ifstream file(fileName);
+	//file.open(fileName);
 	
 
+	int	chart_count = 0;
+	int point_count = 0;
+
+	chart_str* charts = new chart_str[1000];
+	point_str* points = new point_str[1000];
+
+
+	while (!file.eof())
+	{
+		int x;
+		std::string elem;
+		file >> elem;
+		if (elem == "Chart")
+		{
+			std::string s;
+			file >> (charts + chart_count)->id;
+			file >> (charts + chart_count)->start;
+			file >> s;
+			file >> (charts + chart_count)->end;
+			file >> (charts + chart_count)->visible;
+			chart_count++;
+		}
+		if (elem == "Point")
+		{
+			file >> (points + point_count)->id;
+			file >> (points + point_count)->x;
+			file >> (points + point_count)->y;
+			file >> (points + point_count)->visible;
+			point_count++;
+		}
+		
+	}
+
+	TPoint * p_points = new TPoint[point_count];
+	TChart * p_charts = new TChart[chart_count];
+
+	for (int i = 0; i < point_count; i++)
+	{
+		(p_points + i)->setX((points + i)->x);
+		(p_points + i)->setY((points + i)->y);
+		if ((points + i)->visible == "vis")
+		{
+			(p_points + i)->setVisible();
+		}
+		else
+		{
+			(p_points + i)->setUnVisible();
+		}
+	}
+
+	for (int i = 0; i < chart_count; i++)
+	{
+
+		if ((charts + i)->visible == "vis")
+		{
+			(p_charts + i)->setVisible();
+
+		}
+		else
+		{
+			(p_charts + i)->setUnVisible();
+		}
+
+
+	}
+
+
+
+	for (int i = 0; i < chart_count; i++)
+	{
+
+		int k;
+		// find start
+		for (int j = 0; j < chart_count; j++)
+		{
+			if ((charts + j)->id == (charts + i)->start)
+				(p_charts + i)->setSatrt(p_charts+j);
+		}
+
+		for (int j = 0; j < point_count; j++)
+		{
+			if ((points + j)->id == (charts + i)->start)
+				(p_charts + i)->setSatrt(p_points + j);
+		}
+
+	}
+
+
+
+	// find end
+	for (int i = 0; i < chart_count; i++)
+	{
+		for (int j = 0; j < chart_count; j++)
+		{
+			if ((charts + j)->id == (charts + i)->end)
+				(p_charts + i)->setEnd(p_charts + j);
+		}
+
+		for (int j = 0; j < point_count; j++)
+		{
+			if ((points + j)->id == (charts + i)->end)
+				(p_charts + i)->setEnd(p_points + j);
+		}
+
+	}
 
 
 
 
 	file.close();
 	
-	return 0;
+	return p_charts;
 }
 
 

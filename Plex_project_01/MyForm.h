@@ -154,7 +154,7 @@ namespace Plex_project_01 {
 			this->radioButton2->Location = System::Drawing::Point(12, 82);
 			this->radioButton2->Name = L"radioButton2";
 			this->radioButton2->Size = System::Drawing::Size(115, 17);
-			this->radioButton2->TabIndex = 1;
+			this->radioButton2->TabIndex = 2;
 			this->radioButton2->TabStop = true;
 			this->radioButton2->Text = L"Vertex Move Mode";
 			this->radioButton2->UseVisualStyleBackColor = true;
@@ -165,7 +165,7 @@ namespace Plex_project_01 {
 			this->radioButton3->Location = System::Drawing::Point(12, 105);
 			this->radioButton3->Name = L"radioButton3";
 			this->radioButton3->Size = System::Drawing::Size(124, 17);
-			this->radioButton3->TabIndex = 2;
+			this->radioButton3->TabIndex = 3;
 			this->radioButton3->TabStop = true;
 			this->radioButton3->Text = L"Edge selection mode";
 			this->radioButton3->UseVisualStyleBackColor = true;
@@ -176,7 +176,7 @@ namespace Plex_project_01 {
 			this->radioButton4->Location = System::Drawing::Point(12, 59);
 			this->radioButton4->Name = L"radioButton4";
 			this->radioButton4->Size = System::Drawing::Size(129, 17);
-			this->radioButton4->TabIndex = 3;
+			this->radioButton4->TabIndex = 1;
 			this->radioButton4->TabStop = true;
 			this->radioButton4->Text = L"Vertex selection mode";
 			this->radioButton4->UseVisualStyleBackColor = true;
@@ -668,16 +668,16 @@ private: System::Void MyForm_KeyDown(System::Object^  sender, System::Windows::F
 }
 private: System::Void openFileToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 
-
-
-
+	gr->FillRectangle(System::Drawing::Brushes::White, 0, 0, Width, Height);
+	top = top->openFromFile("Plex_00.bin");
+	top->show(gr, System::Drawing::Color::Black);
 
 }
 private: System::Void saveToFileToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 
-
+	
 	top->saveChartToFile("Plex_00.bin");
-
+	
 
 }
 };
